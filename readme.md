@@ -21,203 +21,105 @@ Socket.IO, Redis, MongoDB ve React üzerine inşa edilmiştir.
 ### 🛠️ **Tech Stack**
 
 * **Frontend:** React, Tailwind
-* **Backend:** Node.js, Express
-* **Real-Time:** Socket.IO
-* **Database:** MongoDB
-* **Cache:** Redis
-* **Auth:** JWT
-* **DevOps:** Docker, Docker Compose
+│   │   ├── config/
+# NovaChat — Real-Time Messaging App
 
----
+NovaChat, gerçek zamanlı sohbet özellikleri olan modern bir full‑stack örnek uygulamadır. Bu repository, asıl proje fikrinin yanı sıra hızlı bir başlangıç (scaffold) sundu: minimal `backend` (Express + Socket.IO + MongoDB + JWT auth) ve `frontend` (Vite + React) uygulamaları ile `docker-compose` tanımı.
 
-### ⚙️ **Running Locally**
+Bu README, repo içindeki scaffold değişikliklerini, çalışma talimatlarını ve kısa API dokümantasyonunu içerir — GitHub üzerinde güzel görünecek şekilde düzenlendi.
 
-#### 1. Ortam değişkenlerini kopyala:
+## Öne çıkanlar
+- Minimal, çalışır halde bir `backend` ve `frontend` scaffold eklendi.
+- Gerçek zamanlı mesajlaşma: Socket.IO ile chat event'leri.
+- Mesajlar MongoDB'ye kaydedilir (`mongoose`).
+- JWT tabanlı auth: `/api/auth/register` ve `/api/auth/login`.
+- Basit frontend login/register ve chat UI (token saklanır ve socket bağlantısına eklenir).
 
-```
-cp .env.example .env
-```
+## Hızlı Başlangıç (Docker, önerilen)
 
-#### 2. Docker Compose ile ayağa kaldır:
+1) Klasör kökünde şu komutla tüm servisleri ayağa kaldırın:
 
-```
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App"
 docker compose up --build
 ```
 
-#### 3. Frontend:
+- Frontend (NGINX): http://localhost:3000
+- Backend API: http://localhost:5000/api
 
-`http://localhost:5173`
+## Yerel geliştirme (Docker olmadan)
 
-#### 4. Backend:
+1) Backend bağımlılıklarını yükleyin ve başlatın:
 
-`http://localhost:5000/api`
-
----
-
-### 📌 **Roadmap**
-
-* [ ] Mesaj şifreleme
-* [ ] Sesli arama
-* [ ] Karanlık tema
-* [ ] Mobil responsive iyileştirme
-* [ ] Mesajın uçtan uca şifrelenmesi
-* [ ] Story özelliği
-
----
-
-### 🧪 **Testing**
-
-* Jest + Supertest ile backend API testleri
-* React Testing Library ile UI testleri
-
----
-
-# 🏗️ **Milestone Planı (3 Hafta)**
-
-## **Hafta 1 — Backend Temel Yapı**
-
-✔ Auth
-✔ User modeli
-✔ Socket.IO setup
-✔ Redis bağlantısı
-✔ Chat & Message modelleri
-✔ Basic DM sistemi
-
----
-
-## **Hafta 2 — Frontend**
-
-✔ Login/Register
-✔ Chat list + kullanıcı arama
-✔ Real-time mesajlaşma UI
-✔ Typing indicator
-✔ Profil & status
-
----
-
-## **Hafta 3 — Advanced Features**
-
-✔ Seen/Delivered
-✔ Dosya gönderme
-✔ Rate limit
-✔ Docker Compose
-✔ README ve dokümantasyon
-
-
-﻿
-
-# 🚀 **PROJECT: NovaChat – Real-Time Messaging App**
-
-**Stack:**
-
-* **Frontend:** React + Tailwind
-* **Backend:** Node.js (Express)
-* **Real-Time:** Socket.IO
-* **Database:** MongoDB
-* **Cache/Presence:** Redis
-* **DevOps:** Docker + Docker Compose
-* **Auth:** JWT + Refresh Token
-
----
-
-# 📁 **Klasör Yapısı (Ideal Repo Architecture)**
-
-```
-nova-chat/
-│
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── sockets/
-│   │   └── utils/
-│   ├── tests/
-│   ├── Dockerfile
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── hooks/
-│   │   └── utils/
-│   ├── public/
-│   ├── Dockerfile
-│   └── package.json
-│
-├── docker-compose.yml
-├── README.md
-└── .env.example
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App\backend"
+npm install
+npm start
 ```
 
----
+2) Frontend bağımlılıklarını yükleyin ve başlatın:
 
-# 🧩 **Öne Çıkan Özellikler (Feature List)**
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App\frontend"
+npm install
+npm run dev
+```
 
-### **1) Auth & User System**
+Not: Docker olmadan MongoDB çalışmıyorsa mesaj depolama başarısız olur; yerel Mongo çalıştırın veya Docker kullanın.
 
-* JWT login/register
-* Refresh tokens
-* Profil fotoğrafı + status (online/idle/offline)
+## Önemli Dosyalar / Yapı
 
----
+- `docker-compose.yml` — `backend`, `frontend`, `mongo`, `redis` servislerini tanımlar.
+- `backend/` — Express + Socket.IO backend
+  - `backend/src/index.js` — sunucu, socket ve Mongo bağlantısı
+  - `backend/src/models/message.js` — `Message` mongoose modeli
+  - `backend/src/models/user.js` — `User` mongoose modeli
+  - `backend/src/routes/auth.js` — `/api/auth/register` ve `/api/auth/login`
+  - `backend/src/middleware/auth.js` — token doğrulama yardımcıları
+- `frontend/` — Vite + React uygulaması
+  - `frontend/src/App.jsx` — login/register + chat UI ve socket istemcisi
 
-### **2) Real-Time Messaging (Core)**
+## Kısa API Dokümantasyonu
 
-* Tekil DM
-* Grup sohbeti
-* **Typing indicator**
-* **Message seen / delivered** durumları
-* Mesaj silme & düzenleme
-* Dosya gönderme (resim, pdf)
+- GET `/api/hello` — Sağlıklı olduğuna dair basit mesaj.
+- GET `/api/messages` — Son mesajları getirir (maks 50). Authorization optional; authenticated kullanıcı ile çağırmak tercih edilir.
+- POST `/api/auth/register` — Body: `{ "username": "", "password": "" }` — Kayıt olur, JWT token döner.
+- POST `/api/auth/login` — Body: `{ "username": "", "password": "" }` — Giriş yapar, JWT token döner.
 
----
+Socket.IO (client-side):
+- Bağlanırken handshake auth içinde token gönderin: `io(url, { auth: { token } })`.
+- Olaylar:
+  - `chat:message` — client -> server: `{ text }` ; server DB'ye kaydeder ve tüm client'lara `{ id, text, from, ts }` yayınlar.
 
-### **3) Presence System (Redis)**
+## Ortam Değişkenleri
 
-* “Online / offline / yazıyor…”
-* Başka cihazdan giriş → aktif oturum yönetimi
+Kök dizinde ` .env.example` bulunur. Önemli değişkenler:
+- `PORT` — backend port (default `5000`)
+- `MONGO_URI` — MongoDB bağlantısı (ör: `mongodb://mongo:27017/novachat`)
+- `REDIS_URL` — Redis URL (scaffold hazır, ama şu an demo için minimal kullanılıyor)
+- `JWT_SECRET` — JWT için gizli anahtar, üretimde güçlü bir değer kullanın
 
----
+## Güvenlik ve Notlar
 
-### **4) Search + Chat List**
+- Bu scaffold demo amaçlıdır. Üretimde eklemeniz gerekenler:
+  - Input validasyonu ve sanitizasyon
+  - Rate limiting
+  - HTTPS zorunluluğu
+  - Güçlü `JWT_SECRET` kullanımı ve oturum yönetimi
+  - Testler ve CI
 
-* Kullanıcı arama
-* Son mesaj + okunmamış mesaj sayısı
+## Neler Eklendi (kısa)
 
----
+- Backend: `Message` model, `User` modeli, auth rotaları, socket token doğrulama, Mongo persist.
+- Frontend: Login/Register UI, token saklama (`localStorage`), socket token ile bağlantı, basit chat UI.
 
-### **5) Notifications**
+## Sonraki Adımlar / Öneriler
 
-* Websocket’ten real-time bildirim
-* Tarayıcı notifikasyonu
-
----
-
-### **6) Security & System Design**
-
-* Rate limiter
-* XSS & CSRF koruması
-* Mesajların şifrelenmesi (basit AES veya libsodium)
-
----
-
-### **7) DevOps**
-
-* Docker Compose ile:
-
-  * backend
-  * frontend
-  * mongo
-  * redis
-    hepsi tek komutla ayağa kalkar:
-
-  ```
-  docker compose up --build
-  ```
+1. Tailwind ile UI iyileştirmesi ve responsive tasarım.
+2. Jest + Supertest ile backend testleri; React Testing Library ile frontend testleri.
+3. GitHub Actions workflow ekleyip `README`'e CI badge yerleştirme.
+4. Mesajlar için paging, silme/düzenleme yetenekleri.
 
 ---
+
+If you want, I can also create a CI workflow and add a build/test badge to this README (ask me to proceed).
