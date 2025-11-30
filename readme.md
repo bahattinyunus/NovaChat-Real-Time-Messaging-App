@@ -22,6 +22,8 @@ Socket.IO, Redis, MongoDB ve React üzerine inşa edilmiştir.
 
 * **Frontend:** React, Tailwind
 │   │   ├── config/
+# [![CI](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml/badge.svg)](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # NovaChat — Real-Time Messaging App
 
 NovaChat, gerçek zamanlı sohbet özellikleri olan modern bir full‑stack örnek uygulamadır. Bu repository, asıl proje fikrinin yanı sıra hızlı bir başlangıç (scaffold) sundu: minimal `backend` (Express + Socket.IO + MongoDB + JWT auth) ve `frontend` (Vite + React) uygulamaları ile `docker-compose` tanımı.

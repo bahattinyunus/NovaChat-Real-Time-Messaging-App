@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install backend deps
+        run: |
+          cd backend
+          npm ci
+      - name: Run backend tests (if present)
+        run: |
+          cd backend
+          npm run test --if-present
+
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install frontend deps
+        run: |
+          cd frontend
+          npm ci
+      - name: Build frontend (if defined)
+        run: |
+          cd frontend
+          npm run build --if-present
