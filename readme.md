@@ -12,6 +12,20 @@
 
 NovaChat, öğrenme ve hızlı prototipleme amacıyla hazırlanmış, gerçek‑zamanlı mesajlaşma özellikleri barındıran bir full‑stack scaffold uygulamasıdır. Bu repo; backend, frontend, gerçek‑zaman katmanı, temel auth ve Docker Compose ile tek komutla çalıştırılabilecek bir yerel ortam içerir.
 
+## Ekran Görüntüleri & Demo
+
+- Aşağıda proje içinde bulunan bazı görseller ve animasyon yer alır. Bu dosyalar `assets/` klasöründen yüklenir.
+
+- Demo animasyon: uygulama akışını gösterir.
+
+![](assets/demo-animation.svg)
+
+- Uygulama arayüzünden bir ekran görüntüsü (placeholder).
+
+![Screenshot](assets/screenshot-placeholder.svg)
+
+Not: Gerçek ekran görüntülerini isterseniz bana gönderin veya `frontend` klasöründeki çalışır örnekten yüksek çözünürlüklü ekran görüntüleri alıp README'ye ekleyeyim.
+
 Ana hedefler
 
 - Hızlı başlangıç: minimal ama çalışır bir backend + frontend iskeleti.
