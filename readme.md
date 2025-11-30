@@ -26,7 +26,10 @@ Socket.IO, Redis, MongoDB ve React üzerine inşa edilmiştir.
 
 # NovaChat — Real-Time Messaging App
 
-> Minimal, çalışır bir NovaChat scaffold — Express + Socket.IO + MongoDB (backend) ve Vite + React (frontend) ile örnek bir real-time chat uygulaması.
+
+<p align="center">
+  <img src="assets/logo.svg" alt="NovaChat logo" width="560" />
+</p>
 
 Bu repo, proje fikrini göstermek ve hızlıca yerel veya Docker tabanlı geliştirme yapmanızı sağlamak için sade, çalışır bir örnek içerir.
 
@@ -62,6 +65,10 @@ docker compose up --build
 
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000/api
+
+<p align="center">
+  <img src="assets/screenshot-placeholder.svg" alt="NovaChat demo screenshot placeholder" width="800" />
+</p>
 
 ## Yerel Geliştirme (Docker olmadan)
 
