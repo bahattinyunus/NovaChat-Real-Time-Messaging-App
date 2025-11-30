@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "c8 --reporter=text node --test",
+    "dev": "node src/index.js",
+    "test": "node --test",
     "lint": "eslint . --ext .js"
   },
   "dependencies": {
@@ -21,7 +21,6 @@
   }
   ,"devDependencies": {
     "supertest": "^6.3.3",
-    "c8": "^8.1.0",
     "eslint": "^8.50.0"
   }
 }

@@ -6,27 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 3000"
+    "preview": "vite preview --port 3000",
+    "test": "vitest",
+    "test:ci": "vitest --run --coverage"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-    ,"socket.io-client": "^4.7.2"
+    "react-dom": "^18.2.0",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "vite": "^5.0.0",
     "tailwindcss": "^3.4.7",
     "postcss": "^8.4.24",
-    "autoprefixer": "^10.4.14"
-  }
-
-  ,"scripts": {
-    "test": "vitest",
-    "test:ci": "vitest --run --coverage",
-    "build": "vite build",
-    "dev": "vite"
-  },
-  "devDependencies": {
+    "autoprefixer": "^10.4.14",
     "vitest": "^1.5.2",
     "@testing-library/react": "^14.0.0",
     "@testing-library/jest-dom": "^6.0.0",
