@@ -1,3 +1,7 @@
-html,body,#root { height: 100%; margin: 0; }
-body { background: #f8fafc; color: #0f172a; }
-code { background:#e6eef8; padding:2px 6px; border-radius:4px; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small helpers */
+body { @apply bg-slate-50 text-slate-900; }
+code { @apply bg-sky-50 px-2 py-0.5 rounded text-sm; }

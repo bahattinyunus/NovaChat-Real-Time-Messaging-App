@@ -96,36 +96,40 @@ export default function App() {
   }
 
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', padding: 24 }}>
-      <h1>NovaChat — Mini Chat</h1>
-      <div style={{ maxWidth: 720 }}>
-        <div style={{ marginBottom: 8 }}>
-          Signed in as <strong>{user.displayName || user.username}</strong>
-          <button style={{ marginLeft: 12 }} onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); setToken(''); setUser(null) }}>Logout</button>
+    <div className="min-h-screen py-12">
+      <div className="max-w-3xl mx-auto px-4">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">NovaChat</h1>
+          <div className="flex items-center gap-3">
+            <div className="text-sm text-slate-600">Signed in as <span className="font-medium">{user.displayName || user.username}</span></div>
+            <button className="px-3 py-1 bg-red-50 text-red-600 rounded" onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); setToken(''); setUser(null) }}>Logout</button>
+          </div>
         </div>
 
-        <div style={{ minHeight: 200, background: '#fff', padding: 12, borderRadius: 8, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-          {messages.length === 0 ? (
-            <div style={{ color: '#666' }}>No messages yet</div>
-          ) : (
-            messages.map((m) => (
-              <div key={m.id} style={{ padding: '6px 8px', borderBottom: '1px solid #f1f5f9' }}>
-                <div style={{ fontSize: 12, color: '#0f172a' }}><strong>{m.from}</strong> <span style={{ color: '#64748b', fontSize: 11 }}>{new Date(m.ts).toLocaleTimeString()}</span></div>
-                <div style={{ marginTop: 4 }}>{m.text}</div>
-              </div>
-            ))
-          )}
-        </div>
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="h-72 overflow-auto p-4 space-y-3">
+            {messages.length === 0 ? (
+              <div className="text-sm text-slate-500">No messages yet</div>
+            ) : (
+              messages.map((m) => (
+                <div key={m.id} className="p-3 rounded border border-slate-100">
+                  <div className="text-xs text-slate-500"><strong className="text-slate-800">{m.from}</strong> <span className="ml-2">{new Date(m.ts).toLocaleTimeString()}</span></div>
+                  <div className="mt-1 text-sm text-slate-900">{m.text}</div>
+                </div>
+              ))
+            )}
+          </div>
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() }}
-            placeholder="Write a message and press Enter"
-            style={{ flex: 1, padding: '8px 10px', borderRadius: 6, border: '1px solid #e2e8f0' }}
-          />
-          <button onClick={sendMessage} style={{ padding: '8px 12px', borderRadius: 6 }}>Send</button>
+          <div className="p-4 border-t border-slate-100 flex gap-3">
+            <input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() }}
+              placeholder="Write a message and press Enter"
+              className="flex-1 px-3 py-2 rounded border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            />
+            <button onClick={sendMessage} className="px-4 py-2 bg-sky-600 text-white rounded">Send</button>
+          </div>
         </div>
       </div>
     </div>
