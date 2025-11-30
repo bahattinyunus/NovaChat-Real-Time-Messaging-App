@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: NovaChat API
+  version: '1.0.0'
+  description: Simple OpenAPI spec for NovaChat demo endpoints
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/hello:
+    get:
+      summary: Sağlık kontrolü
+      responses:
+        '200':
+          description: Başarılı
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /api/messages:
+    get:
+      summary: Son mesajları getir
+      responses:
+        '200':
+          description: Mesaj listesi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    text:
+                      type: string
+                    from:
+                      type: string
+                    ts:
+                      type: string
+  /api/auth/register:
+    post:
+      summary: Kullanıcı kayıt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Kayıt başarılı
+  /api/auth/login:
+    post:
+      summary: Kullanıcı giriş
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Giriş başarılı

@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "NovaChat - Example Requests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"alice\",\"password\":\"secret\"}"
+        },
+        "url": "http://localhost:5000/api/auth/register"
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"alice\",\"password\":\"secret\"}"
+        },
+        "url": "http://localhost:5000/api/auth/login"
+      }
+    },
+    {
+      "name": "Get messages",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:5000/api/messages"
+      }
+    },
+    {
+      "name": "Health (hello)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:5000/api/hello"
+      }
+    }
+  ]
+}
