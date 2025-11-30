@@ -122,6 +122,105 @@ curl http://localhost:5000/api/messages
 import { io } from 'socket.io-client'
 
 const token = localStorage.getItem('token') // veya bir değişkenden alın
+[![CI](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml/badge.svg)](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml) [![Codecov](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+# NovaChat — Real-Time Messaging App
+
+<p align="center">
+  <img src="assets/logo.svg" alt="NovaChat logo" width="560" />
+</p>
+
+Minimal, çalışır bir NovaChat scaffold — Express + Socket.IO + MongoDB (backend) ve Vite + React (frontend) ile örnek bir real-time chat uygulaması.
+
+## İçindekiler
+
+- [Öne Çıkanlar](#öne-çıkanlar)
+- [Canlı Başlangıç (Docker)](#canlı-başlangıç-docker)
+- [Yerel Geliştirme (Docker olmadan)](#yerel-geliştirme-docker-olmadan)
+- [Kısa API & Socket Dokümantasyonu](#kısa-api--socket-dokümantasyonu)
+- [WebSocket Örneği (Client)](#websocket-örneği-client)
+- [Proje Yapısı](#proje-yapısı)
+- [Ortam Değişkenleri](#ortam-değişkenleri)
+- [Güvenlik Notları](#güvenlik-notları)
+- [Katkıda Bulunma](#katkıda-bulunma)
+- [License](#license)
+
+## Öne Çıkanlar
+
+- Basit, çalışır `backend` + `frontend` scaffold.
+- Gerçek zamanlı ileti: `Socket.IO`.
+- Mesajlar MongoDB'ye kaydedilir (`mongoose`).
+- JWT tabanlı auth: `/api/auth/register` ve `/api/auth/login`.
+- Frontend'de login/register + token saklama + chat UI.
+
+## Canlı Başlangıç (Docker)
+
+Önerilen yol: Docker Compose ile tüm servisleri ayağa kaldırın.
+
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App"
+docker compose up --build
+```
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5000/api
+
+<p align="center">
+  <img src="assets/demo-animation.svg" alt="NovaChat animated demo" width="800" />
+</p>
+
+## Yerel Geliştirme (Docker olmadan)
+
+1) Backend:
+
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App\backend"
+npm install
+npm start
+```
+
+2) Frontend:
+
+```powershell
+cd "c:\github repolarım\NovaChat – Real-Time Messaging App\frontend"
+npm install
+npm run dev
+```
+
+> Not: Mesaj kalıcılığı için MongoDB gereklidir; Docker kullanmıyorsanız yerel MongoDB çalıştırın veya bağlantınızı `MONGO_URI` ile ayarlayın.
+
+## Kısa API & Socket Dokümantasyonu
+
+- GET `/api/hello` — Sağlık kontrolü.
+- GET `/api/messages` — Son 50 mesajı döner.
+- POST `/api/auth/register` — Kayıt. Body: `{ "username": "", "password": "" }` — Dönen: `{ token, user }`.
+- POST `/api/auth/login` — Giriş. Body: `{ "username": "", "password": "" }` — Dönen: `{ token, user }`.
+
+Socket.IO davranışı:
+
+- Bağlanırken token gönderin: `io(url, { auth: { token } })`.
+- Gönderme: `socket.emit('chat:message', { text: 'Merhaba' })`.
+- Dinleme: `socket.on('chat:message', (msg) => ...)` — sunucudan yayınlanan `{ id, text, from, ts }` şekli.
+
+### Örnek: curl ile auth & mesajlar
+
+```bash
+# Kayıt
+curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
+
+# Giriş
+curl -X POST http://localhost:5000/api/auth/login -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
+
+# Mesajları al (token varsa Authorization header ekleyin)
+curl http://localhost:5000/api/messages
+```
+
+## WebSocket Örneği (Client)
+
+```js
+import { io } from 'socket.io-client'
+
+const token = localStorage.getItem('token') // veya bir değişkenden alın
 const socket = io('http://localhost:5000', { auth: { token } })
 
 socket.on('connect', () => console.log('connected', socket.id))
@@ -175,6 +274,3 @@ Bakınız: `CONTRIBUTING.md` — küçük, odaklı PR'lar gönderin; test ekleyi
 
 Bu proje MIT lisansı ile dağıtılmaktadır — daha fazla bilgi için `LICENSE` dosyasına bakın.
 
----
-
-Her şey hazır — isterseniz README'e proje logosu/screenshot ekleyebilirim veya tailwind ile UI görselleştirmesi yapabilirim.
