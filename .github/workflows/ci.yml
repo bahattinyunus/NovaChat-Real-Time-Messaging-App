@@ -31,7 +31,7 @@ jobs:
       - name: Lint backend
         run: |
           cd backend
-          npx eslint . --ext .js || true
+          npx eslint . --ext .js
       - name: Run backend tests (if present)
         run: |
           cd backend
@@ -71,7 +71,7 @@ jobs:
       - name: Lint frontend
         run: |
           cd frontend
-          npx eslint . --ext .js,.jsx || true
+          npx eslint . --ext .js,.jsx
       - name: Run frontend tests
         run: |
           cd frontend
@@ -82,3 +82,11 @@ jobs:
         with:
           name: frontend-coverage
           path: frontend/coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: |
+            backend/coverage/**
+            frontend/coverage/**
+          flags: frontend,backend
+          fail_ci_if_error: true
