@@ -28,10 +28,20 @@ jobs:
         run: |
           cd backend
           npm ci
+      - name: Lint backend
+        run: |
+          cd backend
+          npx eslint . --ext .js || true
       - name: Run backend tests (if present)
         run: |
           cd backend
-          npm run test --if-present
+          npm run test
+      - name: Upload backend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage
 
   frontend:
     name: Frontend CI
@@ -58,7 +68,17 @@ jobs:
         run: |
           cd frontend
           npm run build --if-present
-      - name: Run frontend tests (if present)
+      - name: Lint frontend
         run: |
           cd frontend
-          npm run test --if-present
+          npx eslint . --ext .js,.jsx || true
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm run test:ci
+      - name: Upload frontend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend/coverage

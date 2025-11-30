@@ -19,4 +19,17 @@
     "postcss": "^8.4.24",
     "autoprefixer": "^10.4.14"
   }
+
+  ,"scripts": {
+    "test": "vitest",
+    "test:ci": "vitest --run --coverage",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vitest": "^1.5.2",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "eslint": "^8.50.0"
+  }
 }
