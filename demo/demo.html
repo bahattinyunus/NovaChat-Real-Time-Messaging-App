@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NovaChat — Demo (static)</title>
+    <style>
+      body{font-family:Inter,Segoe UI,Roboto,Arial;margin:24px;background:#f8fafc}
+      .app{max-width:900px;margin:0 auto;background:#fff;padding:16px;border-radius:8px}
+      #messages{height:260px;overflow:auto;border:1px solid #e6eef8;padding:8px;border-radius:6px;background:#fbfdff}
+      .msg{padding:6px;border-radius:6px;margin-bottom:6px}
+      .from{font-weight:700;color:#0f172a}
+      .ts{font-size:12px;color:#94a3b8}
+      form{display:flex;gap:8px;margin-top:8px}
+      input[type=text]{flex:1;padding:8px;border:1px solid #e6eef8;border-radius:6px}
+      button{padding:8px 12px;border-radius:6px;border:none;background:#60A5FA;color:#fff}
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <h2>NovaChat — Static Demo</h2>
+      <div id="status">Backend: <span id="bstatus">unknown</span></div>
+      <div id="messages"></div>
+
+      <form id="form">
+        <input id="text" type="text" placeholder="Mesajınızı yazın..." autocomplete="off" />
+        <button type="submit">Gönder</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+      const apiBase = 'http://127.0.0.1:5000'
+      const msgBox = document.getElementById('messages')
+      const bstatus = document.getElementById('bstatus')
+
+      async function loadMessages(){
+        try{
+          const res = await fetch(apiBase + '/api/messages')
+          const data = await res.json()
+          msgBox.innerHTML = ''
+          (data.messages || []).forEach(m=>{
+            const d = document.createElement('div')
+            d.className='msg'
+            d.innerHTML = `<div class="from">${m.from}</div><div>${m.text}</div><div class="ts">${new Date(m.ts).toLocaleString()}</div>`
+            msgBox.appendChild(d)
+          })
+        }catch(err){
+          msgBox.innerHTML = '<div style="color:#ef4444">Backend not reachable or Mongo not available.</div>'
+        }
+      }
+
+      // Try health
+      fetch(apiBase + '/api/hello').then(r=>r.json()).then(j=>{ bstatus.textContent = 'online' }).catch(()=>{ bstatus.textContent = 'offline' })
+
+      // Socket
+      const socket = io(apiBase, { transports:['websocket','polling'] })
+      socket.on('connect', ()=>{ console.log('socket connected', socket.id); })
+      socket.on('chat:message', m => {
+        const d = document.createElement('div')
+        d.className='msg'
+        d.innerHTML = `<div class="from">${m.from}</div><div>${m.text}</div><div class="ts">${new Date(m.ts).toLocaleString()}</div>`
+        msgBox.appendChild(d)
+      })
+
+      document.getElementById('form').addEventListener('submit', e=>{
+        e.preventDefault();
+        const text = document.getElementById('text').value.trim();
+        if(!text) return;
+        socket.emit('chat:message', { text })
+        document.getElementById('text').value = ''
+      })
+
+      loadMessages()
+    </script>
+  </body>
+</html>
