@@ -26,6 +26,41 @@ NovaChat, öğrenme ve hızlı prototipleme amacıyla hazırlanmış, gerçek‑
 
 Not: Gerçek ekran görüntülerini isterseniz bana gönderin veya `frontend` klasöründeki çalışır örnekten yüksek çözünürlüklü ekran görüntüleri alıp README'ye ekleyeyim.
 
+---
+
+## Assets & Optimizasyon
+
+Projede kullanılan görseller `assets/` klasöründe bulunur. Mevcut SVG dosyalarının minify edilmiş versiyonları da `assets/*.min.svg` olarak eklendi. Eğer PNG / WebP gibi raster fallbacks isterseniz, yerel olarak SVG'den dönüştürmek için aşağıdaki adımları takip edin:
+
+1. `sharp` paketini kurun (global değil proje içinde tercih edilir):
+
+```powershell
+cd "C:\github repolarım\NovaChat – Real-Time Messaging App"
+npm install sharp
+```
+
+2. SVG'leri PNG/WebP'ye dönüştürün:
+
+```powershell
+node tools/generate-raster-images.js
+```
+
+Bu script `assets/` içinde `logo.png`, `logo.webp`, `screenshot-placeholder.png` vb. dosyalar oluşturacaktır.
+
+GIF / Video demo eklemek isterseniz:
+
+- Basit bir rehber: frontend uygulamasını çalıştırıp (veya bir ekran kaydı oluşturarak) `ffmpeg` ile MP4 veya GIF üretebilirsiniz:
+
+```powershell
+# 5 saniyelik ekran kaydı örneği (Windows):
+# (manuel olarak çalıştırılacak bir GUI kayıt aracı kullanmak genelde daha pratiktir.)
+
+# ffmpeg ile MP4 -> GIF örneği (önce MP4 kaydedin):
+ffmpeg -i demo.mp4 -vf "fps=15,scale=900:-1:flags=lanczos" -loop 0 demo.gif
+```
+
+Eğer isterseniz ben bu repo için bir `demo.mp4`/`demo.gif` placeholder oluşturup README'ye ekleyebilirim; ancak gerçek uygulama görüntüleri sizin tarafınızdan ya da repository'de çalıştırılarak kaydedilmelidir (ben remote ortamda ekran görüntüsü alamıyorum).
+
 Ana hedefler
 
 - Hızlı başlangıç: minimal ama çalışır bir backend + frontend iskeleti.
