@@ -67,7 +67,7 @@ docker compose up --build
 - Backend API: http://localhost:5000/api
 
 <p align="center">
-  <img src="assets/screenshot-placeholder.svg" alt="NovaChat demo screenshot placeholder" width="800" />
+  <img src="assets/demo-animation.svg" alt="NovaChat animated demo" width="800" />
 </p>
 
 ## Yerel Geliştirme (Docker olmadan)
