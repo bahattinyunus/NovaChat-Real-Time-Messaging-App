@@ -75,19 +75,25 @@ io.on('connection', (socket) => {
   });
 });
 
-// Connect to MongoDB then start server
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/novachat'
-mongoose.connect(mongoUri, { autoIndex: false })
-  .then(() => {
-    console.log('Connected to MongoDB')
-    server.listen(port, () => {
-      console.log(`Backend listening on port ${port}`)
+
+// Export app and server so tests can import the Express app directly.
+export { app, server }
+
+// Only start the server when not in test mode.
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(mongoUri, { autoIndex: false })
+    .then(() => {
+      console.log('Connected to MongoDB')
+      server.listen(port, () => {
+        console.log(`Backend listening on port ${port}`)
+      })
     })
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error', err)
-    // still start server so REST endpoints (if any) can run in degraded mode
-    server.listen(port, () => {
-      console.log(`Backend listening on port ${port} (no Mongo)`)
+    .catch((err) => {
+      console.error('MongoDB connection error', err)
+      // still start server so REST endpoints (if any) can run in degraded mode
+      server.listen(port, () => {
+        console.log(`Backend listening on port ${port} (no Mongo)`)
+      })
     })
-  })
+}

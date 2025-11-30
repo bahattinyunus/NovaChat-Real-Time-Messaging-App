@@ -83,124 +83,109 @@ npm start
 2) Frontend:
 
 ```powershell
-cd "c:\github repolarım\NovaChat – Real-Time Messaging App\frontend"
-npm install
-npm run dev
-```
-
-> Not: Mesaj kalıcılığı için MongoDB gereklidir; Docker kullanmıyorsanız yerel MongoDB çalıştırın veya bağlantınızı `MONGO_URI` ile ayarlayın.
-
-## Kısa API & Socket Dokümantasyonu
-
-- GET `/api/hello` — Sağlık kontrolü.
-- GET `/api/messages` — Son 50 mesajı döner.
-- POST `/api/auth/register` — Kayıt. Body: `{ "username": "", "password": "" }` — Dönen: `{ token, user }`.
-- POST `/api/auth/login` — Giriş. Body: `{ "username": "", "password": "" }` — Dönen: `{ token, user }`.
-
-Socket.IO davranışı:
-
-- Bağlanırken token gönderin: `io(url, { auth: { token } })`.
-- Gönderme: `socket.emit('chat:message', { text: 'Merhaba' })`.
-- Dinleme: `socket.on('chat:message', (msg) => ...)` — sunucudan yayınlanan `{ id, text, from, ts }` şekli.
-
-### Örnek: curl ile auth & mesajlar
-
-```bash
-# Kayıt
-curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
-
-# Giriş
-curl -X POST http://localhost:5000/api/auth/login -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
-
-# Mesajları al (token varsa Authorization header ekleyin)
-curl http://localhost:5000/api/messages
-```
-
-## WebSocket Örneği (Client)
-
-```js
-import { io } from 'socket.io-client'
-
-const token = localStorage.getItem('token') // veya bir değişkenden alın
-[![CI](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml/badge.svg)](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml) [![Codecov](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<!--
+  README: Full rewrite for NovaChat project
+  - Completely new, project-focused, Turkish-language README
+  - Contains badges, quick start, API & Socket examples, testing/CI notes, env vars, security, contribution
+-->
 
 [![CI](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml/badge.svg)](https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App/actions/workflows/ci.yml) [![Codecov](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/bahattinyunus/NovaChat-Real-Time-Messaging-App) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 # NovaChat — Real‑Time Messaging App
 
-![](assets/logo.svg)
+![NovaChat Logo](assets/logo.svg)
 
-NovaChat bu repo içinde gösterilen, öğrenme ve geliştirme amaçlı bir real‑time chat scaffold'udur. Proje, üretim seviyesindeki karmaşıklığın küçük bir örneğini sunar:
+NovaChat, öğrenme ve hızlı prototipleme amacıyla hazırlanmış, gerçek‑zamanlı mesajlaşma özellikleri barındıran bir full‑stack scaffold uygulamasıdır. Bu repo; backend, frontend, gerçek‑zaman katmanı, temel auth ve Docker Compose ile tek komutla çalıştırılabilecek bir yerel ortam içerir.
 
-- Backend: Node.js + Express, Socket.IO, JWT auth, MongoDB (mongoose)
-- Frontend: Vite + React (+ Tailwind'den basit stil)
-- DevOps: Docker Compose ile tek komutla yerel ortam
+Ana hedefler
 
-Bu README proje ile hızlıca çalışmaya başlamanız, API'leri denemeniz ve katkıda bulunmanız için gereken her şeyi içerir.
+- Hızlı başlangıç: minimal ama çalışır bir backend + frontend iskeleti.
+- Gerçek‑zamanlı altyapı: Socket.IO ile mesajlaşma, presence ve bildirim akışı.
+- Kolay geliştirilebilir: MongoDB ile mesajların kalıcılığı, JWT ile basit auth.
+
+---
 
 ## İçindekiler
 
 - [Hızlı Başlangıç (Docker)](#hızlı-başlangıç-docker)
 - [Yerel Geliştirme (Docker olmadan)](#yerel-geliştirme-docker-olmadan)
-- [Kısa API & WebSocket Dokümantasyonu](#kısa-api--websocket-dokümantasyonu)
-- [Örnekler (curl & Socket.IO)](#örnekler-curl--socketio)
-- [Testler & CI](#testler--ci)
+- [API & WebSocket (kısa)](#api--websocket-kısa)
+- [Örnekler: curl & Socket.IO](#örnekler-curl--socketio)
+- [Testler ve CI](#testler-ve-ci)
 - [Ortam Değişkenleri](#ortam-değişkenleri)
 - [Proje Yapısı](#proje-yapısı)
 - [Güvenlik Notları](#güvenlik-notları)
 - [Katkıda Bulunma](#katkıda-bulunma)
 - [Lisans](#lisans)
 
+---
+
 ## Hızlı Başlangıç (Docker)
 
-En kolay yol Docker Compose ile tüm servisleri çalıştırmaktır:
+1. Depoyu klonlayın ve köke gidin:
 
 ```powershell
-cd "c:\github repolarım\NovaChat – Real-Time Messaging App"
+git clone https://github.com/bahattinyunus/NovaChat-Real-Time-Messaging-App.git
+cd "NovaChat – Real-Time Messaging App"
+```
+
+2. Docker Compose ile tüm servisleri ayağa kaldırın:
+
+```powershell
 docker compose up --build
 ```
 
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000/api
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000/api`
 
-Uygulama çalışırken README başında gösterilen animasyon demo görünümünde mesaj akışını görebilirsiniz.
+Animasyonlu demo README başında gösterilir; uygulama çalışırken benzer bir akışı frontend üzerinde gözlemleyebilirsiniz.
+
+---
 
 ## Yerel Geliştirme (Docker olmadan)
 
-1) Backend
+Backend ve frontend’i ayrı ayrı geliştirmek isterseniz:
+
+Backend
 
 ```powershell
-cd "c:\github repolarım\NovaChat – Real-Time Messaging App\backend"
+cd backend
 npm install
 npm run dev
 ```
 
-2) Frontend
+Frontend
 
 ```powershell
-cd "c:\github repolarım\NovaChat – Real-Time Messaging App\frontend"
+cd frontend
 npm install
 npm run dev
 ```
 
-Not: MongoDB'ye bağlanmak için `MONGO_URI` ortam değişkenini ayarlayın veya Docker Compose ile birlikte gelen Mongo'yu kullanın.
+Not: Mesajların kalıcılığı için MongoDB gereklidir. Docker kullanmıyorsanız yerel bir MongoDB çalıştırın veya `MONGO_URI` ile uzak bir DB’ye bağlanın.
 
-## Kısa API & WebSocket Dokümantasyonu
+---
 
-- GET `/api/hello` — sağlık kontrolü, örnek yanıt: `{ message: 'Hello from NovaChat backend' }`.
-- GET `/api/messages` — son mesajları getirir (maks 50).
-- POST `/api/auth/register` — kayıt: `{ username, password }` → dönen: `{ token, user }`.
-- POST `/api/auth/login` — giriş: `{ username, password }` → dönen: `{ token, user }`.
+## API & WebSocket (kısa)
 
-Socket.IO
+HTTP Endpoints
 
-- Bağlanırken token gönderin: `io(origin, { auth: { token } })`.
-- Gönderme: `socket.emit('chat:message', { text })` — server DB'ye kaydeder ve tüm client'lara broadcast eder.
-- Dinleme: `socket.on('chat:message', (msg) => ...)` — `{ id, text, from, ts }` şeklinde gelir.
+- `GET /api/hello` — sağlık kontrolü. Örnek: `{ message: 'Hello from NovaChat backend' }`.
+- `GET /api/messages` — son mesajları listeler (maks 50).
+- `POST /api/auth/register` — kayıt: `{ username, password }` → `{ token, user }`.
+- `POST /api/auth/login` — giriş: `{ username, password }` → `{ token, user }`.
 
-## Örnekler (curl & Socket.IO)
+WebSocket davranışı (Socket.IO)
 
-Kayıt / Giriş (curl):
+- Bağlantı: `io(origin, { auth: { token } })` (token opsiyonel; auth yapılırsa `socket.user` atanır).
+- Gönderme: `socket.emit('chat:message', { text })` — server mesajı kaydeder ve `chat:message` ile tüm client'lara gönderir.
+- Dinleme: `socket.on('chat:message', (msg) => ...)` — `{ id, text, from, ts }` yapısında mesaj alırsınız.
+
+---
+
+## Örnekler: curl & Socket.IO
+
+Kayıt / Giriş (curl)
 
 ```powershell
 curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
@@ -208,11 +193,96 @@ curl -X POST http://localhost:5000/api/auth/register -H "Content-Type: applicati
 curl -X POST http://localhost:5000/api/auth/login -H "Content-Type: application/json" -d '{"username":"alice","password":"secret"}'
 ```
 
-Mesajları alma:
+Mesajları alma
 
 ```powershell
 curl http://localhost:5000/api/messages
 ```
+
+Socket.IO kısa örnek (browser/client)
+
+```js
+import { io } from 'socket.io-client'
+const token = localStorage.getItem('token')
+const socket = io('http://localhost:5000', { auth: { token } })
+socket.on('connect', () => console.log('connected', socket.id))
+socket.on('chat:message', (m) => console.log('msg', m))
+socket.emit('chat:message', { text: 'Merhaba NovaChat' })
+```
+
+---
+
+## Testler ve CI
+
+- Backend: Supertest ile temel entegrasyon testleri ve `c8` ile coverage.
+- Frontend: Vitest + React Testing Library.
+- GitHub Actions workflow: install, cache, lint, test, build, coverage upload ve Codecov entegrasyonu.
+
+CI çıktıları ve coverage artefaktları Actions üzerinden indirilebilir. Codecov badge README’de yer alır; eğer private repo iseniz `CODECOV_TOKEN` secret eklemeniz gerekir.
+
+---
+
+## Ortam Değişkenleri
+
+Kökte `.env.example` bulunmaktadır — geliştirirken kopyalayıp `.env` oluşturun.
+
+- `PORT` — backend port, default `5000`
+- `MONGO_URI` — MongoDB bağlantı stringi (örn. `mongodb://mongo:27017/novachat`)
+- `REDIS_URL` — Redis bağlantısı (opsiyonel)
+- `JWT_SECRET` — JWT gizli anahtar (üretimde güçlü bir değer kullanın)
+
+---
+
+## Proje Yapısı (kısa)
+
+```
+├── backend/        # Express + Socket.IO + Mongoose + routes
+├── frontend/       # Vite + React + Tailwind
+├── .github/workflows/ci.yml
+├── docker-compose.yml
+├── assets/         # logo + demo SVG
+└── README.md
+```
+
+---
+
+## Güvenlik Notları
+
+Bu repo eğitim/demo amaçlıdır. Üretime taşımadan önce:
+
+- Girdi doğrulama ve sanitizasyon ekleyin.
+- Rate limiting ve brute‑force koruması uygulayın.
+- HTTPS kullanın ve güvenli cookie/CSRF önlemleri alın.
+- JWT secret’ınızı güvenle yönetin; refresh token stratejisi kullanın.
+
+---
+
+## Katkıda Bulunma
+
+Destek, hata bildirimi veya PR’lar için çok memnun oluruz. Basit bir yol:
+
+1. Fork/clone yapın
+2. Yeni bir branch açın: `git checkout -b feat/isim`
+3. Değişiklikleri commit/push yapıp PR açın
+
+Detaylar için `CONTRIBUTING.md` dosyasına bakın.
+
+---
+
+## Lisans
+
+MIT — detaylar için `LICENSE` dosyasına bakın.
+
+---
+
+İsterseniz README’ye aşağıdaki eklemeleri otomatik yapabilirim:
+
+- Örnek Postman koleksiyonu / Swagger/OpenAPI dökümanı
+- Deploy rehberi (Docker Production, Vercel/Heroku örnekleri)
+- Daha kapsamlı örnek testler ve socket entegrasyon testleri
+
+Hangi eklemeyi otomatik yapmamı istersiniz? 
+
 
 Socket.IO client (kısa):
 
